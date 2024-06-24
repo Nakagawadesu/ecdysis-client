@@ -5,7 +5,6 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Link } from "expo-router";
-import { Text } from "react-native";
 import StoregeHandler from "@/services/StorageHandler";
 const storegeHandler = new StoregeHandler();
 export default function HomeScreen() {
@@ -48,9 +47,7 @@ export default function HomeScreen() {
           TakePicture
         </Link>
       </ThemedView>
-      <Text>{`${JSON.stringify(
-        storegeHandler.getItem("sessionToken")
-      )} `}</Text>
+      <ThemedView>{`${storegeHandler.getItem("sessionToken")}`}</ThemedView>
     </ParallaxScrollView>
   );
 }

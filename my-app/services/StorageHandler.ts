@@ -6,7 +6,7 @@ import {
   isUserProfile,
 } from "@/helpers/TypeCheckers";
 
-class storegeHandler {
+class StoregeHandler {
   public storeData = async (
     data: sessionToken | userPreference | userProfile
   ) => {
@@ -58,4 +58,4 @@ class storegeHandler {
   };
 }
 
-export default storegeHandler;
+export default StoregeHandler;
