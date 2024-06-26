@@ -1,72 +1,75 @@
-import { Image, StyleSheet, Platform } from "react-native";
+import React from "react";
+import { StyleSheet, ScrollView } from "react-native";
+import { Layout, Text, Button, Card } from "@ui-kitten/components";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { Link } from "expo-router";
-import StoregeHandler from "@/services/StorageHandler";
-const storegeHandler = new StoregeHandler();
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/NotColorfullPatterns.png")}
-          resizeMode="cover"
-        />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Bem Vindo ao Ecdysis!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="subtitle">
-          Faça o Login para usufluir da nossa plataforma
-        </ThemedText>
-      </ThemedView>
-      <ThemedView>
-        <Link replace href="/loginScreen">
-          Login
-        </Link>
-      </ThemedView>
-      <ThemedView>
-        <Link replace href="/registerScreen">
-          Register
-        </Link>
-      </ThemedView>
-      <ThemedView>
-        <Link replace href="/homeScreen">
-          Home
-        </Link>
-      </ThemedView>
-      <ThemedView>
-        <Link replace href="/TakePicture">
-          TakePicture
-        </Link>
-      </ThemedView>
-      <ThemedView>{`${storegeHandler.getItem("sessionToken")}`}</ThemedView>
-    </ParallaxScrollView>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Layout style={styles.headerContainer}>
+        <Text category="h1" style={styles.title}>
+          Bem-vindo ao Ecdysis
+        </Text>
+        <Text category="s1" style={styles.subtitle}>
+          Envie fotos da sua pele para análise usando um modelo CNN
+        </Text>
+      </Layout>
+
+      <Card style={styles.card}>
+        <Text category="h5" style={styles.cardTitle}>
+          Sobre o Projeto
+        </Text>
+        <Text>
+          O Ecdysis é um aplicativo desenvolvido para ajudar na análise de
+          doenças de pele. Utilizando um modelo de rede neural convolucional
+          (CNN), você pode enviar fotos da sua pele para receber uma análise
+          preliminar.
+        </Text>
+      </Card>
+
+      <Card style={styles.card}>
+        <Text category="h5" style={styles.cardTitle}>
+          Doenças de Pele que nosso modelo pode analisar:
+          {"\n"}- Eczema
+          {"\n"}- Psoríase
+          {"\n"}- Melanoma
+          {"\n"}- Dermatite de Contato
+        </Text>
+      </Card>
+
+      <Button
+        style={styles.button}
+        onPress={() => console.log("Go to upload screen")}
+      >
+        Enviar Foto
+      </Button>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
+  container: {
+    flexGrow: 1,
+    padding: 16,
+    backgroundColor: "#ffffff",
   },
-  stepContainer: {
-    gap: 8,
+  headerContainer: {
+    marginBottom: 24,
+    alignItems: "center",
+  },
+  title: {
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+  subtitle: {
+    textAlign: "center",
+  },
+  card: {
+    marginVertical: 8,
+    padding: 16,
+  },
+  cardTitle: {
+    marginBottom: 8,
+  },
+  button: {
+    marginTop: 24,
   },
 });
