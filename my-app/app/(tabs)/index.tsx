@@ -44,7 +44,7 @@ export default function HomeScreen() {
         </Link>
       </ThemedView>
       <ThemedView>
-        <Link replace href="/TakePicture">
+        <Link replace href="/takePicture">
           TakePicture
         </Link>
       </ThemedView>
