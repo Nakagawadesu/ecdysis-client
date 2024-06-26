@@ -1,4 +1,3 @@
-// app/_layout.tsx
 import * as React from "react";
 import { useEffect } from "react";
 import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
@@ -15,6 +14,7 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useFonts } from "expo-font";
+import TabLayout from "./(tabs)/_layout"; // Adjust path as necessary
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -42,12 +42,7 @@ export default function RootLayout() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="loginScreen" />
-            <Stack.Screen name="homeScreen" />
-            <Stack.Screen name="+not-found" />
-          </Stack>
+          <TabLayout />
         </ThemeProvider>
       </ApplicationProvider>
     </>
