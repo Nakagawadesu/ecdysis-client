@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { Layout, Text, Button, Card } from "@ui-kitten/components";
+import { router } from "expo-router";
 
 export default function HomeScreen() {
   return (
@@ -36,10 +37,7 @@ export default function HomeScreen() {
         </Text>
       </Card>
 
-      <Button
-        style={styles.button}
-        onPress={() => console.log("Go to upload screen")}
-      >
+      <Button style={styles.button} onPress={() => router.push("/takePicture")}>
         Enviar Foto
       </Button>
     </ScrollView>
