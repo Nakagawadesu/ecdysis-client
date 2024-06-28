@@ -5,8 +5,9 @@ import { router } from "expo-router";
 
 import { REACT_APP_API_URL } from "@/types/EnvGambiarra";
 export default function RegisterScreen() {
-  const [username, setUsername] = useState("");
+  const [email, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const handleRegister = async () => {
@@ -19,8 +20,9 @@ export default function RegisterScreen() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username,
+          email,
           password,
+          confirmPassword,
         }),
       });
 
@@ -39,16 +41,23 @@ export default function RegisterScreen() {
   return (
     <Layout style={styles.container}>
       <Text category="h1" style={styles.title}>
-        Login
+        Cadastre-se
       </Text>
       <Input
-        placeholder="Username"
-        value={username}
+        placeholder="Email"
+        value={email}
         onChangeText={setUsername}
         style={styles.input}
       />
       <Input
-        placeholder="Password"
+        placeholder="Senha"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        style={styles.input}
+      />
+      <Input
+        placeholder="Confirme sua senha"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
