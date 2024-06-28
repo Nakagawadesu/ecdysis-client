@@ -84,7 +84,7 @@ export default function LoginScreen() {
         style={styles.input}
       />
       <Input
-        placeholder="Password"
+        placeholder="senha"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
