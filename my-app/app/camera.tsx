@@ -1,6 +1,7 @@
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function App() {
   const [facing, setFacing] = useState('back');
@@ -27,10 +28,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera}>
+      <CameraView style={styles.camera} facing={facing as CameraType}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
+          <TouchableOpacity style={styles.flipButton} onPress={toggleCameraFacing}>
+            <Text style={styles.text}><MaterialCommunityIcons name="camera-flip-outline" size={24} color="black" /></Text>
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -52,11 +53,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     margin: 64,
   },
-  button: {
+  flipButton: {
     flex: 1,
     alignSelf: 'flex-end',
     alignItems: 'center',
   },
+  takePicture: {
+    flex: 1,
+    alignSelf:  'flex-end',
+    alignItems: 'center',
+  },
+  flashContainer: {
+    flex: 1,
+    top: 0,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  flashButton: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+
   text: {
     fontSize: 24,
     fontWeight: 'bold',
