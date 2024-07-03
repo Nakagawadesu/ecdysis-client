@@ -42,7 +42,13 @@ export default function RootLayout() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Stack></Stack>
+          <Stack
+      screenOptions={{
+        headerShown: true,
+        headerTitle: "", 
+        
+      }}
+    />
         </ThemeProvider>
       </ApplicationProvider>
     </>
