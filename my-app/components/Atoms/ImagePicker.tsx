@@ -41,55 +41,7 @@ export default function ImagePickerExample() {
     <View style={styles.container}>
       <Button title="Pick an image from camera roll" onPress={pickImage} />
       {image && <Image source={{ uri: image }} style={styles.image} />}
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#fff",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {startCamera ? (
-          <Camera
-            style={{ flex: 1, width: "100%" }}
-            ref={(r) => {
-              camera = r;
-            }}
-          ></Camera>
-        ) : (
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: "#fff",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity
-              onPress={__startCamera}
-              style={{
-                width: 130,
-                borderRadius: 4,
-                backgroundColor: "#14274e",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                height: 40,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#fff",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                Take picture
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
+    
     </View>
   );
 }
