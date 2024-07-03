@@ -19,6 +19,11 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [apiResponse, setApiResponse] = useState("");
+
+  const [showPasswords, setShowPasswords] = useState(false); 
+  const togglePasswordVisibility = () => {
+    setShowPasswords((prev) => !prev);
+  };
   useEffect(() => {
     console.log("Component mounted");
     console.log("API URL:", REACT_APP_API_URL);
@@ -59,9 +64,9 @@ export default function LoginScreen() {
       const message = responseData.message;
       const success = responseData.success;
       success ? router.replace("/") : setApiResponse(message);
-      if (!success) {
-        //store token here
+      if (success) {
         storegeHandler.storeData(responseData.body);
+        router.replace("/homeScreen");
       }
       setApiResponse(responseData.message);
       ToastAndroid.showWithGravity(
@@ -71,7 +76,11 @@ export default function LoginScreen() {
       );
     } catch (err) {
       console.error("Login error:", err);
-      setError((err as Error).message);
+      ToastAndroid.showWithGravity(
+        `${err}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
     } finally {
       setLoading(false);
     }
@@ -92,10 +101,12 @@ export default function LoginScreen() {
         placeholder="senha"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
+        secureTextEntry={!showPasswords}
       />
-      {error ? <Text status="danger">{error}</Text> : null}
+       <Button appearance="ghost" onPress={togglePasswordVisibility} style={styles.showPasswordButton}>
+        {showPasswords ? "Ocultar Senhas" : "Mostrar Senhas"}
+      </Button>
+      {/* {error ? <Text status="danger">{error}</Text> : null} */}
       <Button onPress={handleLogin} disabled={loading} style={styles.button}>
         {loading ? "Logging in..." : "Login"}
       </Button>
@@ -112,13 +123,12 @@ export default function LoginScreen() {
       <Text
         style={{
           paddingBottom: 10,
-
-          marginTop: 10,
           textAlign: "center",
           color: "black",
           fontSize: 15,
         }}
       >
+         
         Não tem uma conta?
       </Text>
       <Button
@@ -152,6 +162,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
+    marginBottom: 16,
     width: "100%",
+  },
+  showPasswordButton: {
+   top: 0,
+    alignSelf: 'flex-end',
+  },
+  easyButton: {
+    marginBottom: 16,
+    width: "100%",
+    backgroundColor: "grey",
   },
 });
