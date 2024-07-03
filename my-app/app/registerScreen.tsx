@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { Layout, Input, Button, Text } from "@ui-kitten/components";
+import { StyleSheet, View, ToastAndroid } from "react-native";
+import { Layout, Input, Button, Text, Modal, Card} from "@ui-kitten/components";
 import { router } from "expo-router";
 
 import { REACT_APP_API_URL } from "@/types/EnvGambiarra";
@@ -9,12 +9,22 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState< string | null>(null);
+  const[success, setSuccess] = useState< string | null>(null);
+  const [visible, setVisible] = useState(false);
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    description: "",
+  }); 
+  const [showPasswords, setShowPasswords] = useState(false); 
+
+  const togglePasswordVisibility = () => {
+    setShowPasswords((prev) => !prev);
+  };
   const handleRegister = async () => {
     setLoading(true);
-    setError("");
     try {
-      const response = await fetch("http://localhost:3000/api/users/login", {
+      const response = await fetch(`${REACT_APP_API_URL}/api/users/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,13 +35,27 @@ export default function RegisterScreen() {
           confirmPassword,
         }),
       });
-
-      if (!response.ok) {
-        throw new Error("Login failed");
+      
+      if(response.status == 200)
+      {
+        setSuccess(`Enviamos um email de confirmação para:`);
+        setVisible(true);
       }
-
-      const data = await response.json();
-      router.replace("Home");
+      if(response.status >= 400)
+      {
+        const responseJson = await response.json(); 
+        ToastAndroid.showWithGravity(
+          `${responseJson.message}`,
+          ToastAndroid.SHORT,
+          ToastAndroid.CENTER
+        );
+      }
+      const responseJson = await response.json(); 
+      ToastAndroid.showWithGravity(
+        `${responseJson.message}`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER
+      );
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -53,20 +77,40 @@ export default function RegisterScreen() {
         placeholder="Senha"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry={!showPasswords}
         style={styles.input}
       />
       <Input
         placeholder="Confirme sua senha"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        secureTextEntry={!showPasswords}
       />
-      {error ? <Text status="danger">{error}</Text> : null}
-      <Button onPress={handleRegister} disabled={loading} style={styles.button}>
-        {loading ? "Logging in..." : "Login"}
+       <Button appearance="ghost" onPress={togglePasswordVisibility} style={styles.showPasswordButton}>
+        {showPasswords ? "Ocultar Senhas" : "Mostrar Senhas"}
       </Button>
+      {/* {error ? <Text status="danger">{error}</Text> : null} */}
+      <Button onPress={handleRegister} disabled={loading} style={styles.button}>
+        {loading ? "Processando..." : "Registrar"}
+      </Button>
+      <Modal
+        visible={visible}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <Card style={styles.card} disabled={true}>
+            <Text category="h6">{modalContent.title}</Text>
+              <Text>
+              {success as string}
+              </Text>
+              <Text  style={{ fontWeight: "bold" }}>
+              {email}
+              </Text>
+            <Button style={styles.button} onPress={() => setVisible(false)}>Fechar</Button>
+          </Card>
+        </View>
+      </Modal>
     </Layout>
   );
 }
@@ -86,6 +130,30 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
-    width: "100%",
+    marginTop: 24,
+  }, 
+
+  card: {
+    padding: 16,
+    width: "80%", // Adjust width as needed
+    backgroundColor: "#ffffff", // Background color of the card
+    borderRadius: 8, // Optional: Adjust border radius
+    shadowColor: "#000000", // Shadow color
+    shadowOffset: { width: 0, height: 2 }, // Shadow offset
+    shadowOpacity: 0.25, // Shadow opacity
+    shadowRadius: 4, // Shadow radius
+    elevation: 5, // Android shadow elevation
+  },
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)", 
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  }, 
+  showPasswordButton: {
+    top: 0,
+    alignSelf: 'flex-end', 
   },
 });
